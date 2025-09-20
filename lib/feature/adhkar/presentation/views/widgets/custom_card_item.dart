@@ -26,7 +26,7 @@ class _CustomCardItemState extends State<CustomCardItem> {
           children: [
             Row(
               children: [
-                Text(widget.item.id.toString(), style: TextStyle(fontSize: 18)),
+                // Text(widget.item.id.toString(), style: TextStyle(fontSize: 18)),
                 // SizedBox(width: 265),
                 IconButton(
                   onPressed: () => copyText(context, widget.item.text),
@@ -93,8 +93,8 @@ class _CustomCardItemState extends State<CustomCardItem> {
                   },
                   child: CircleAvatar(
                     radius: 20,
-                    backgroundColor: Color(0xffecfdf5),
-                    child: Text("+1", style: TextStyle(color: AppColors.black)),
+                    backgroundColor: AppColors.primaryColor,
+                    child: Text("+1", style: TextStyle(color: AppColors.white)),
                   ),
                 ),
               ],

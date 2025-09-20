@@ -47,9 +47,7 @@ try {
       final date = DateComponents.from(DateTime.now());
       final prayerTimesData = PrayerTimes(coordinates, date, params);
       final formatter = DateFormat.jm();
-      // List<PrayerModel> listPrayerModel=[
-      //   PrayerModel(name: "",)
-      // ];
+
       
           prayerTimes = {
         "الفجر": formatter.format(prayerTimesData.fajr),

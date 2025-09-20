@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zker/core/utils/app_colors.dart';
 import 'package:zker/feature/adhkar/presentation/view_model/adhkar_cubit/adhkar_cubit.dart';
 import 'package:zker/feature/adhkar/presentation/view_model/adhkar_cubit/adhkar_state.dart';
 import 'package:zker/feature/adhkar/presentation/views/widgets/app_bar.dart';
 import 'package:zker/feature/adhkar/presentation/views/widgets/custom_card.dart';
-import 'package:zker/feature/adhkar/presentation/views/widgets/search_adkar_text_filed.dart';
+
 import 'package:zker/services/jeson_services.dart';
 
 class AdhkarBody extends StatelessWidget {
@@ -40,7 +41,8 @@ class AdhkarBody extends StatelessWidget {
                   (context, index) {
                     final listadhkar = state.listAdhkar;
                     return CustomCard(
-                    color: index%2==0? Color(0xfffff0f1): Color(0xffecfdf5),
+                    color: AppColors.purpulLight,
+                    //index%2==0? Color(0xfffff0f1): Color(0xffecfdf5),
                       item: listadhkar[index],
                     );
                   },

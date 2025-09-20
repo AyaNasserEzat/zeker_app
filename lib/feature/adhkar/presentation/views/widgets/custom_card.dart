@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zker/core/utils/app_colors.dart';
 
 import 'package:zker/feature/adhkar/data/models/adhkar_category.dart';
 
@@ -29,13 +30,13 @@ class CustomCard extends StatelessWidget {
           height: 100,
           decoration: BoxDecoration(
             color: color,
-            border: Border.all(color: const Color.fromARGB(255, 224, 188, 200)),
+        
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
      mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(item.category),
+              Text(item.category,style: TextStyle(color: AppColors.white),),
               // CircleAvatar(
               //   radius: 16,
 
