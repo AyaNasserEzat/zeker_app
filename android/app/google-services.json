@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "888272419377",
+    "project_id": "push-notification-767df",
+    "storage_bucket": "push-notification-767df.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888272419377:android:bcb57ec14bff98e8553310",
+        "android_client_info": {
+          "package_name": "com.example.zker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVQ4oJVJOxGlb5MdVqSNR39tcETU8_mrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
