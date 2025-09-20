@@ -15,7 +15,7 @@ class ProfileView extends StatelessWidget {
           children: [
             ListTile(
               leading: IconButton(onPressed: (){
-                NotificationServices.showNotification();
+                //NotificationServices.showNotification();
               }, icon: Icon(Icons.notifications_active)),
               title: Text("notifications"),
               trailing: Switch(value: false, onChanged: (v){

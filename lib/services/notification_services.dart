@@ -15,8 +15,16 @@ class NotificationServices {
         InitializationSettings(android: initializationSettingsAndroid);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
+static List<String> azkarList = [
+  "أصبحنا وأصبح الملك لله 🌸",
+  "اللهم بك أصبحنا وبك أمسينا ☀️",
+  "رضيت بالله ربًا وبالإسلام دينًا وبمحمد ﷺ نبيًا",
+  "اللهم ما أصبح بي من نعمة فمنك وحدك",
+  "لا إله إلا الله وحده لا شريك له"
+];
 
-  static Future showNotification() async {
+  static Future showNotification(DateTime start,DateTime end,Duration interval) async {
+  int  id=0;
     const NotificationDetails android = NotificationDetails(
       android: AndroidNotificationDetails(
         "channelId",
@@ -26,19 +34,23 @@ class NotificationServices {
       ),
     );
     tz.initializeTimeZones();
-    //tz.TZDateTime(tz.local, 2025);
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      '🕌 أذكار الصباح',
-      'ابدأ يومك بذكر الله 🌞',
-
-      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
-
-      android,
-      matchDateTimeComponents: DateTimeComponents.time,
-
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-    );
+   tz.TZDateTime scheduledTime= tz.TZDateTime.from(start,tz.local);
+    for (var i = 0; i< azkarList.length ;i++) {
+  await flutterLocalNotificationsPlugin.zonedSchedule(
+    id++,
+    '🕌 أذكار الصباح',
+    azkarList[i],
+  
+   // tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+  scheduledTime,
+    android,
+    matchDateTimeComponents: DateTimeComponents.time,
+  
+    androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+  );
+    // نزود الوقت بالفاصل اللي حدده اليوزر
+    scheduledTime = scheduledTime.add(interval);
+}
   }
 
   void cancleAllNotification() async {
