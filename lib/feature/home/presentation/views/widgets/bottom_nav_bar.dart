@@ -20,8 +20,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int selectedIndex = 0;
 
   final List<IconData> icons = [Icons.home, FlutterIslamicIcons.tasbih2,FlutterIslamicIcons.tasbihHand,FlutterIslamicIcons.allah];
-  final List<String> labels = ['Home', 'السبحه',"ازكار","مواقيت الصلاه"];
-  final List<Widget> screens = [HomeView(), SaphaView(),AdhkarView(),PrayerTimesView()];
+  final List<String> labels = ['Home', 'السبحه',"مواقيت الصلاه","   ازكار"];
+  final List<Widget> screens = [HomeView(), SaphaView(),PrayerTimesView(),ProfileView()];
 
   @override
   Widget build(BuildContext context) {

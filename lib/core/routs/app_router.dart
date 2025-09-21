@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:zker/feature/home/presentation/views/widgets/bottom_nav_bar.dart';
+import 'package:zker/feature/profile/presentation/views/azkar_detail_view.dart';
 import 'package:zker/feature/sapha/data/models/ziker_model/ziker_model.dart';
 import 'package:zker/feature/sapha/presentation/view_model/cubits/add_ziker_cubit/add_ziker_cubit.dart';
 import 'package:zker/feature/sapha/presentation/views/sapha_view.dart';
@@ -35,6 +36,13 @@ class AppRouter {
     );
   },
 ),
+
+ GoRoute(
+        name: 'azkars',
+        path: '/azkars',
+        // لو عايزة تبعتي بيانات: state.extra
+        builder: (context, state) => const AzkarDetailView(),
+      ),
 
     ],
   );

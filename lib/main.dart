@@ -19,11 +19,11 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // await PushNotification.init();
   await NotificationServices.init();
-DateTime start = DateTime.now().copyWith(hour: 2, minute: 40);
-DateTime end = DateTime.now().copyWith(hour: 3, minute: 20);
-Duration interval = const Duration(minutes: 5);
+// DateTime start = DateTime.now().copyWith(hour: 2, minute: 40);
+// DateTime end = DateTime.now().copyWith(hour: 3, minute: 20);
+// Duration interval = const Duration(minutes: 5);
 
-await NotificationServices.showNotification(start, end, interval);
+// await NotificationServices.showNotification(start, end, interval);
 
 // await AndroidAlarmManagerPlusService.initAndroidAlarmManager();
 // await AndroidAlarmManagerPlusService.scheduledDailyNotification();
