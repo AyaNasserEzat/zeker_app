@@ -1,127 +1,265 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:zker/feature/sapha/presentation/views/widgets/add_btn.dart';
-import 'package:zker/services/notification_services.dart';
+// import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
+// import 'package:zker/feature/sapha/presentation/views/widgets/add_btn.dart';
+// import 'package:zker/services/notification_services.dart';
 
-class RiminderDialog extends StatefulWidget {
+// class RiminderDialog extends StatefulWidget {
+//   const RiminderDialog({super.key});
+
+//   @override
+//   State<RiminderDialog> createState() => _RiminderDialogState();
+// }
+
+// class _RiminderDialogState extends State<RiminderDialog> {
+//   DateTime? startTime;
+//   DateTime? endTime;
+
+//   Duration selectedInterval = const Duration(minutes: 1);
+
+//   final List<Duration> availableIntervals = const [
+//     Duration(minutes: 1),
+//     Duration(minutes: 3),
+//     Duration(minutes: 5),
+//     Duration(minutes: 10),
+//   ];
+
+//   /// يفتح الـ TimePicker ويحدد البداية
+//   Future<void> _pickStartTime() async {
+//     final pickedTime = await showTimePicker(
+//       context: context,
+//       initialTime: TimeOfDay.now(),
+//     );
+
+//     if (pickedTime != null) {
+//       final now = DateTime.now();
+
+//       final pickedDateTime = DateTime(
+//         now.year,
+//         now.month,
+//         now.day,
+//         pickedTime.hour,
+//         pickedTime.minute,
+//       );
+
+//       setState(() {
+//         startTime = pickedDateTime;
+//         endTime = pickedDateTime; // حالياً النهاية زي البداية
+//       });
+
+//       // لو الوقت اللي اختاره عدى خلاص النهاردة -> نضيف يوم
+//       if (startTime!.isBefore(now)) {
+//         startTime = startTime!.add(const Duration(days: 1));
+//       }
+
+//       debugPrint("البداية: $startTime | النهاية: $endTime");
+//     }
+//   }
+
+//   /// يحفظ الإشعار
+//   Future<void> _saveReminder() async {
+//     if (startTime != null && endTime != null) {
+//       await NotificationServices.showNotification(
+//         startTime!,
+//         endTime!,
+//         selectedInterval,
+//       );
+//       context.pop();
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text("من فضلك اختر وقت البداية")),
+//       );
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Dialog(
+//       child: Padding(
+//         padding: const EdgeInsets.all(16),
+//         child: SizedBox(
+//           height: 220,
+//           child: Column(
+//             spacing: 15,
+//             children: [
+//               const Text(
+//                 "اختر وقت التنبيه",
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+
+//               /// صف لاختيار البداية والنهاية
+//               Row(
+//                 textDirection: TextDirection.rtl,
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   InkWell(
+//                     onTap: _pickStartTime,
+//                     child: Text(
+//                       startTime != null
+//                           ? "البداية: ${startTime!.hour}:${startTime!.minute.toString()}"
+//                           : "اختر بداية التنبيه",
+//                     ),
+//                   ),
+//                   // Text(
+//                   //   endTime != null
+//                   //       ? "النهاية: ${endTime!.hour}:${endTime!.minute.toString().padLeft(2, "0")}"
+//                   //       : "النهاية: 12:00",
+//                   // ),
+//                 ],
+//               ),
+
+//               /// اختيار المدة بين التنبيهات
+//               Row(
+//                 textDirection: TextDirection.rtl,
+//                 children: [
+//                   const Text(": التنبيه كل "),
+//                   DropdownButton<Duration>(
+//                     value: selectedInterval,
+//                     items: availableIntervals.map((duration) {
+//                       return DropdownMenuItem<Duration>(
+//                         value: duration,
+//                         child: Text("${duration.inMinutes} دقيقة"),
+//                       );
+//                     }).toList(),
+//                     onChanged: (value) {
+//                       if (value != null) {
+//                         setState(() => selectedInterval = value);
+//                       }
+//                     },
+//                   ),
+//                 ],
+//               ),
+
+//               /// أزرار الحفظ والإلغاء
+//               Row(
+//                 textDirection: TextDirection.rtl,
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 spacing: 10,
+//                 children: [
+//                   AddBtn(onPressed: _saveReminder, text: "حفظ"),
+//                   AddBtn(onPressed: () => context.pop(), text: "إلغاء"),
+//                 ],
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zker/feature/profile/presentation/cubits/rimider_cubit.dart';
+import 'package:zker/feature/profile/presentation/cubits/riminder_state.dart';
+import 'package:zker/feature/sapha/presentation/views/widgets/add_btn.dart';
+
+
+class RiminderDialog extends StatelessWidget {
   const RiminderDialog({super.key});
 
   @override
-  State<RiminderDialog> createState() => _RiminderDialogState();
-}
-
-class _RiminderDialogState extends State<RiminderDialog> {
-  DateTime? start;
-      Duration interval = const Duration(minutes: 1); 
-   DateTime? end;
-  
-  Duration selectedInterval = const Duration(minutes: 3);
-
-  final List<Duration> intervals = [
-    const Duration(minutes: 1),
-    const Duration(minutes: 3),
-    const Duration(minutes: 5),
-    const Duration(minutes: 10),
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    // final reminderCubit = context.read<RimiderMoringCubit>();
+    final List<int> availableIntervals = const [
+  1,
+  3,
+  5,
+  10
+
+    ];
+
     return Dialog(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: SizedBox(
-             
-      height: 200,
-          child: Column(
-            spacing: 15,
-            children: [
-              const Text("اختر وقت التنبيه"),
-            
-              Row(
-                textDirection: TextDirection.rtl,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:  [
-                  InkWell(
-                    onTap: () async{
-                       TimeOfDay? pickedTime = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              if (pickedTime != null) {
-                DateTime now = DateTime.now();
-            setState(() {
-                 start = DateTime(
-                  now.year,
-                  now.month,
-                  now.day,
-                  pickedTime.hour,
-                  pickedTime.minute,
-                );
-            });
-                 end = DateTime(
-                  now.year,
-                  now.month,
-                  now.day,
-                  pickedTime.hour,
-                  pickedTime.minute,
-                );
-
- if(start!.isBefore(now)){
-  start!.add(Duration(days: 1));
- }
-                print(
-                  "جدولة الإشعارات من ${start.toString()} لحد ${end.toString()}",
-                );
-
-              
-              }
-                    },
-                    child: Text(start != null
-                        ? "البداية: ${start!.hour}:${start!.minute}"
-                        : "اختر بداية التنبيه"),),
-                  Text(" 12.00 :نهاية التنبيه"),
-                ],
-              ),
-              
-              Row(
-                textDirection: TextDirection.rtl,
+          height: 220,
+          child: BlocBuilder<RimiderMoringCubit, RiminderState>(
+            builder: (context, state) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(": التنبيه كل "),
-                  DropdownButton<Duration>(
-                    value: selectedInterval,
-                    items: intervals.map((duration) {
-                      return DropdownMenuItem<Duration>(
-                        value: duration, // 🔑 لازم نحدد value
-                        child: Text("${duration.inMinutes} دقيقة"),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedInterval = value!;
-                      });
-                    },
+                  const Text(
+                    "اختر وقت التنبيه",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 15),
+    
+                  /// صف لاختيار البداية والنهاية
+                  Row(
+                    textDirection: TextDirection.rtl,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          final pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                          );
+                          if (pickedTime != null) {
+                            context.read<RimiderMoringCubit>().setStartTime(context, pickedTime);
+                          }
+                        },
+                        child: Text(
+                          state.startTime != null
+                              ? "البداية: ${state.startTime!.hour}:${state.startTime!.minute.toString()}"
+                              : "اختر بداية التنبيه",
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+    
+                  /// اختيار المدة بين التنبيهات
+                  Row(
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      const Text(": التنبيه كل "),
+                      DropdownButton<int>(
+                        value: state.interval,
+                        items: availableIntervals.map((duration) {
+                          return DropdownMenuItem<int>(
+                            value: duration,
+                            child: Text("$duration دقيقة"),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          if (value != null) {
+                            context.read<RimiderMoringCubit>().setInterval(value);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+    
+                  /// أزرار الحفظ والإلغاء
+                  Row(
+                    textDirection: TextDirection.rtl,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AddBtn(
+                        onPressed: () {
+                         if(state.startTime!=null){
+context.read<RimiderMoringCubit>().saveReminder(context,state.startTime!);
+                         } 
+                         else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("من فضلك اختر وقت البداية")),
+      );
+    }
+                        } ,
+                        text: "حفظ",
+                      ),
+                      const SizedBox(width: 10),
+                      AddBtn(
+                        onPressed: () => context.pop(),
+                        text: "إلغاء",
+                      ),
+                    ],
                   ),
                 ],
-              ),
-              Row(
-                textDirection: TextDirection.rtl,
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 10,
-                children: [
-                  AddBtn(onPressed: ()async{
-  await NotificationServices.showNotification(
-                  start!,
-                  end!,
-                  interval,
-                );
-
-                  }, text: "حفظ"),
-                           AddBtn(onPressed: (){
-                            context.pop();
-                           }, text: "الغاء")
-                ],
-              )
-            ],
+              );
+            },
           ),
         ),
       ),

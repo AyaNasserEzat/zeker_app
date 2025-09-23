@@ -60,6 +60,7 @@ final Map<String, IconData> prayerIcons = {
                
                       
                      ]),
+                     boxShadow: [BoxShadow(color: Color(0x40000000),blurRadius: 4,offset: Offset(0, 1))],
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Row(

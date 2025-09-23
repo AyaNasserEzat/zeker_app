@@ -21,8 +21,9 @@ final ZikerModel zikerModel;
           color: AppColors.white,
          boxShadow: [
           BoxShadow(
-        color:  Colors.black.withOpacity(0.1),
-        offset: Offset(2,3)
+        color:  Color(0x40000000),
+        offset: Offset(0,1),
+        blurRadius: 4
         
           )
          ]

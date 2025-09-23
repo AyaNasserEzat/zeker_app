@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zker/core/utils/app_colors.dart';
-import 'package:zker/services/notification_services.dart';
+
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -19,7 +19,7 @@ class ProfileView extends StatelessWidget {
           children: [
           InkWell(
             onTap: () {
-              context.push("/azkars");
+              context.push("/azkarDetailView");
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0,right: 8),
@@ -29,7 +29,7 @@ class ProfileView extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: AppColors.white,
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(.2),offset: Offset(1, 1))],
+                  boxShadow: [BoxShadow(color: Color(0x40000000),offset: Offset(0, 1),blurRadius: 4)],
                   
                 ),
                 child: Padding(
