@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zker/feature/profile/presentation/cubits/riminder_state.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:zker/feature/profile/presentation/cubits/evening_cubit/evening_state.dart';
+
 import 'package:zker/services/notification_services.dart';
 
-class RimiderMoringCubit extends Cubit<RiminderState> {
-  RimiderMoringCubit() : super(RiminderState());
+class EveningCubit extends Cubit<EveningAzkarState> {
+  EveningCubit() : super(EveningAzkarState(isNotificationActive: Hive.box("setting").get("eveningAzkar",defaultValue: true)));
 
   void setStartTime(BuildContext context, TimeOfDay pickedTime) {
        final now = DateTime.now();
@@ -36,12 +38,17 @@ class RimiderMoringCubit extends Cubit<RiminderState> {
 
   void toggelIsActive(bool isOn){
   isOn!=isOn;
+  Hive.box("setting").put("eveningAzkar", isOn);
+  if(isOn==false){
+    NotificationServices.cancleAllNotification(100);
+  }
+
   emit(state.copyWith(isNotificationActive: isOn));
   }
 
 
   /// يحفظ الإشعار
-  Future<void> saveReminder(BuildContext context,TimeOfDay startTime) async {
+  Future<void> saveReminder(BuildContext context,TimeOfDay startTime,List azkarList) async {
    
       final now = DateTime.now();
       final startTimeDateTime = DateTime(
@@ -62,7 +69,11 @@ class RimiderMoringCubit extends Cubit<RiminderState> {
       await NotificationServices.showNotification(
         startTimeDateTime,
         startTimeDateTime,
-     Duration(minutes:    state.interval!),
+        
+     Duration(minutes:    state.interval),
+     azkarList,
+     200
+     
       );
       // إغلاق مربع الحوار بعد الحفظ
       context.pop();

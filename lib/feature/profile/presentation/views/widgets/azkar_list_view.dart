@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:zker/core/utils/app_colors.dart';
-import 'package:zker/services/notification_services.dart';
+
 
 class AzkarListView extends StatelessWidget {
-  const AzkarListView({super.key});
-
+  const AzkarListView({super.key, required this.list});
+final List list;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -26,14 +26,14 @@ class AzkarListView extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         textDirection: TextDirection.rtl,
-                        NotificationServices.azkarList[index]),
+                       list[index]),
                     )),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(height: 15);
               },
-              itemCount: NotificationServices.azkarList.length,
+              itemCount: list.length,
             ),
           );
   }

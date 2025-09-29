@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:zker/feature/home/presentation/views/widgets/bottom_nav_bar.dart';
-import 'package:zker/feature/profile/presentation/cubits/rimider_cubit.dart';
-import 'package:zker/feature/profile/presentation/views/azkar_detail_view.dart';
+import 'package:zker/feature/profile/presentation/cubits/evening_cubit/evening_cubit.dart';
+import 'package:zker/feature/profile/presentation/cubits/moring_cubit/rimider_cubit.dart';
+import 'package:zker/feature/profile/presentation/views/evening_azkar_details_view.dart';
+import 'package:zker/feature/profile/presentation/views/moring_azkar_detail_view.dart';
 import 'package:zker/feature/profile/presentation/views/profile_view.dart';
 import 'package:zker/feature/sapha/data/models/ziker_model/ziker_model.dart';
 import 'package:zker/feature/sapha/presentation/view_model/cubits/add_ziker_cubit/add_ziker_cubit.dart';
@@ -50,6 +52,7 @@ class AppRouter {
     
   },
 ),
+
  GoRoute(
   path: '/azkarDetailView',
   name: 'azkarDetailView',
@@ -57,7 +60,19 @@ class AppRouter {
    
     return BlocProvider(
       create: (_) => RimiderMoringCubit(),
-      child: AzkarDetailView(),
+      child: MorningAzkarDetailView(),
+    );
+    
+  },
+),
+GoRoute(
+  path: '/EveningAzkarDetailsView',
+  name: 'EveningAzkarDetailsView',
+  builder: (context, state) {
+   
+    return BlocProvider(
+      create: (_) => EveningCubit(),
+      child: EveningAzkarDetailsView(),
     );
     
   },

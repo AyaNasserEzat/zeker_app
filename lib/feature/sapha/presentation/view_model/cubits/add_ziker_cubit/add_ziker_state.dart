@@ -1,6 +1,5 @@
 
 
-import 'package:zker/feature/sapha/data/models/ziker_model/ziker_model.dart';
 
 abstract class AddZikerStates  {
 

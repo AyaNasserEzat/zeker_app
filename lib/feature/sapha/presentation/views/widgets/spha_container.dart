@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zker/core/utils/app_colors.dart';

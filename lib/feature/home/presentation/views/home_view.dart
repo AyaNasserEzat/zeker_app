@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zker/core/utils/app_colors.dart';
 import 'package:zker/feature/home/data/repositorys/home_repo_impl.dart';
 import 'package:zker/feature/home/presentation/view_model/surah_cubit/surah_cubit.dart';
 import 'package:zker/feature/home/presentation/view_model/surah_cubit/surah_state.dart';
@@ -17,7 +18,7 @@ class HomeView extends StatelessWidget {
           (_) =>
               SurahListCubit(HomeRepoImpl(ApiService(Dio())))..getSurahList(),
       child: Scaffold(
-        appBar: AppBar(title: Text("القرآن الكريم")),
+        appBar: AppBar(title: Text("القرآن الكريم",style: TextStyle(color: AppColors.white),),centerTitle: true,backgroundColor: AppColors.primaryColor,),
         body: BlocBuilder<SurahListCubit, SurahListState>(
           builder: (context, state) {
             if (state is SurahListLoading)

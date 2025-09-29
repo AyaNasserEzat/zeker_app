@@ -7,7 +7,7 @@ class RiminderState extends Equatable {
   // وقت النهاية لإشعارات الأذكار
   final TimeOfDay? endTime;
   // الفاصل الزمني بين الإشعارات بالدقائق
-  final int? interval;
+  final int interval;
   // هل الإشعارات فعالة (مفعلة)
   final bool isNotificationActive;
 
@@ -15,7 +15,7 @@ class RiminderState extends Equatable {
     this.startTime,
     this.endTime,
     this.interval=1,
-    this.isNotificationActive = false,
+    this.isNotificationActive = true,
   });
     RiminderState copyWith({
     TimeOfDay? startTime,
