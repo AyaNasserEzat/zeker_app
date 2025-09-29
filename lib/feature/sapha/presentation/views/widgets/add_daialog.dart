@@ -12,6 +12,7 @@ class AddDaialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final formKey = GlobalKey<FormState>();
     return Dialog(
       backgroundColor: AppColors.white,
       child: Padding(
@@ -21,43 +22,64 @@ class AddDaialog extends StatelessWidget {
           width: 200,
           child: BlocConsumer<AddZikerCubit, AddZikerStates>(
             builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 10,
-                children: [
-                  Text(
-                    "اضافه زكر للمسبحه",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  CustomTextFiled(
-                    hintText: "اضافه زكر",
-                    controller: BlocProvider.of<AddZikerCubit>(context).name,
-                  ),
-                  CustomTextFiled(
-                    hintText: "العدد",
-                    controller:
-                        BlocProvider.of<AddZikerCubit>(context).maxCount,
-                  ),
-                  AddBtn(
-                    text:  "اضافه زكر",
-                    onPressed: () {
-                      var zikerModel = ZikerModel(
-                        name: BlocProvider.of<AddZikerCubit>(context).name.text,
-                        maxCount: int.parse(
-                          BlocProvider.of<AddZikerCubit>(context).maxCount.text,
-                        ),
-                      );
-                      BlocProvider.of<AddZikerCubit>(context).add(zikerModel);
-                          // تفريغ الحقول
-    BlocProvider.of<AddZikerCubit>(context).name.clear();
-    BlocProvider.of<AddZikerCubit>(context).maxCount.clear();
+              return Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 10,
+                  children: [
+                    Text(
+                      "اضافه زكر للمسبحه",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    CustomTextFiled(
+                      hintText: "اضافه زكر",
+                      controller: BlocProvider.of<AddZikerCubit>(context).name,
+                      validator: (value) {
+                         if (value == null || value.isEmpty) {
+                    return 'هذا الحقل مطلوب ولا يمكن أن يكون فارغاً';
+                  }
+                                    return null; 
 
-    // قفل الديالوج
-    Navigator.pop(context);
+                      },
+                    ),
+                    CustomTextFiled(
+                      hintText: "العدد",
+                      keyboardType: TextInputType.number,
+                      controller:
+                          BlocProvider.of<AddZikerCubit>(context).maxCount,
+                          validator: (value) {
+                            if(value==null|| value.isEmpty){
+                              
+                    return 'هذا الحقل مطلوب ولا يمكن أن يكون فارغاً';
+                            }
+                            return null;
+                          },
 
-                    },
-                  ),
-                ],
+                    ),
+                    AddBtn(
+                      text:  "اضافه زكر",
+                      onPressed: () {
+                   if(formKey.currentState!.validate())
+                {
+                       var zikerModel = ZikerModel(
+                          name: BlocProvider.of<AddZikerCubit>(context).name.text,
+                          maxCount: int.parse(
+                            BlocProvider.of<AddZikerCubit>(context).maxCount.text,
+                          ),
+                        );
+                        BlocProvider.of<AddZikerCubit>(context).add(zikerModel);
+                            // تفريغ الحقول
+                    BlocProvider.of<AddZikerCubit>(context).name.clear();
+                    BlocProvider.of<AddZikerCubit>(context).maxCount.clear();
+                
+                    // قفل الديالوج
+                    Navigator.pop(context);
+                }
+                      },
+                    ),
+                  ],
+                ),
               );
             },
             listener: (BuildContext context, Object? state) {
